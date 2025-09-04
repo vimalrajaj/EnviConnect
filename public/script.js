@@ -29,7 +29,7 @@ async function loginUser() {
     showToast(data.message);
   } else {
     showToast("✅ Login successful!");
-    setTimeout(() => window.location.href = "index.html", 1000);
+  setTimeout(() => window.location.href = "home.html", 1000);
   }
 }
 

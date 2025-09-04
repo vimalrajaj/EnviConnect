@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Project | EnviConnect</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f9f6;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 60%;
+      margin: 40px auto;
+      background: white;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #2f855a;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    textarea {
+      resize: vertical;
+    }
+    .small-note {
+      font-size: 12px;
+      color: #555;
+    }
+    button {
+      background: #2f855a;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #276749;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Create a New Project</h2>
+  <form id="projectForm" enctype="multipart/form-data">
+
+      <!-- Theme -->
+      <div class="form-group">
+        <label for="theme">Project Theme</label>
+        <select id="theme" name="theme" required>
+          <option value="">Select Theme</option>
+          <option>Renewable Energy</option>
+          <option>Waste Management</option>
+          <option>Tree Plantation</option>
+          <option>Awareness Campaign</option>
+          <option>Sustainable Farming</option>
+          <option>Others</option>
+        </select>
+      </div>
+
+      <!-- Name -->
+      <div class="form-group">
+        <label for="name">Project Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+
+      <!-- Duration -->
+      <div class="form-group">
+        <label for="duration">Duration</label>
+        <input type="text" id="duration" name="duration" placeholder="e.g. 2 Weeks / 01-10-2025 to 15-10-2025" required>
+      </div>
+
+      <!-- Location -->
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" id="location" name="location" required>
+      </div>
+
+      <!-- Brief description -->
+      <div class="form-group">
+        <label for="brief">Brief Description (max 100 words)</label>
+        <textarea id="brief" name="brief" maxlength="600" required></textarea>
+        <p class="small-note">Limit: 100 words</p>
+      </div>
+
+      <!-- Detailed description -->
+      <div class="form-group">
+        <label for="details">Detailed Description</label>
+        <textarea id="details" name="details" rows="6" required></textarea>
+      </div>
+
+      <!-- Images -->
+      <div class="form-group">
+        <label for="images">Upload Images</label>
+        <input type="file" id="images" name="images" multiple accept="image/*">
+      </div>
+
+      <!-- Additional Info -->
+      <div class="form-group">
+        <label for="info">Additional Info for Participants</label>
+        <textarea id="info" name="info" rows="4" placeholder="e.g. Bring gloves, Water provided"></textarea>
+      </div>
+
+      <!-- Captcha -->
+      <div class="form-group">
+        <label for="captcha">Captcha: 3 + 5 = ?</label>
+        <input type="text" id="captcha" name="captcha" required>
+      </div>
+
+      <button type="submit">Submit Project</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('projectForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      try {
+        const res = await fetch('/api/projects/add', {
+          method: 'POST',
+          body: formData
+        });
+        if (res.ok) {
+          window.location.href = 'home.html';
+        } else {
+          const data = await res.json();
+          alert(data.message || 'Failed to create project.');
+        }
+      } catch (err) {
+        alert('Error submitting project.');
+      }
+    });
+  </script>
+
+</body>
+</html>

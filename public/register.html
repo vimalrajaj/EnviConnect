@@ -300,8 +300,8 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
   });
   const data = await res.json();
   if (data.success) {
-    showToast("Account created! Redirecting...", "success");
-    setTimeout(() => window.location.href = "login.html", 2000);
+  showToast("Account created! Redirecting...", "success");
+  setTimeout(() => window.location.href = "login.html", 2000);
   } else {
     showToast(data.message, "error");
   }

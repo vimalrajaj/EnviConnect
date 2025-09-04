@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EnviConnect | Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #f4f9f4;
+      color: #234d20;
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 240px;
+      background: #eaf6ea;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid #d2e3d2;
+      min-height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+    }
+    .sidebar .logo {
+      font-size: 1.7rem;
+      font-weight: bold;
+      color: #2e7d32;
+      padding: 32px 0 18px 32px;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar nav {
+      flex: 1;
+    }
+    .sidebar nav ul {
+      list-style: none;
+      padding: 0 0 0 0;
+      margin: 0;
+    }
+    .sidebar nav ul li {
+      padding: 16px 32px;
+      font-size: 1.08rem;
+      color: #234d20;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-left: 4px solid transparent;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .sidebar nav ul li.active, .sidebar nav ul li:hover {
+      background: #d2e3d2;
+      border-left: 4px solid #2e7d32;
+      color: #2e7d32;
+    }
+    .sidebar .user {
+      padding: 24px 32px;
+      border-top: 1px solid #d2e3d2;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sidebar .user img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #b7e4c7;
+    }
+    .sidebar .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar .user-info .name {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .sidebar .user-info .email {
+      font-size: 0.92rem;
+      color: #4b604b;
+    }
+    .main {
+      margin-left: 240px;
+      flex: 1;
+      min-height: 100vh;
+      background: #f4f9f4;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 24px 36px 0 36px;
+      gap: 18px;
+    }
+    .topbar .icon {
+      font-size: 1.3rem;
+      color: #2e7d32;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    .dashboard-content {
+      padding: 24px 36px 36px 36px;
+    }
+    .welcome {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #234d20;
+    }
+    .subtitle {
+      color: #4b604b;
+      margin-bottom: 24px;
+      font-size: 1.08rem;
+    }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 28px;
+    }
+    .project-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px rgba(46,125,50,0.07);
+      padding: 0 0 24px 0;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;
+      border: 1px solid #e0e8e0;
+    }
+    .project-card:hover {
+      box-shadow: 0 6px 24px rgba(46,125,50,0.13);
+      transform: translateY(-4px);
+    }
+    .project-img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      border-radius: 14px 14px 0 0;
+      background: #eaf6ea;
+    }
+    .project-content {
+      padding: 18px 22px 0 22px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .project-title {
+      font-size: 1.18rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #234d20;
+    }
+    .project-desc {
+      color: #4b604b;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      min-height: 38px;
+    }
+    .volunteers {
+      color: #2e7d32;
+      font-size: 0.98rem;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background: #eaf6ea;
+      border-radius: 6px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+    .progress {
+      height: 100%;
+      background: #2e7d32;
+      border-radius: 6px;
+      transition: width 0.3s;
+    }
+    .join-btn {
+      background: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 0;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    .join-btn:hover {
+      background: #388e3c;
+    }
+    @media (max-width: 900px) {
+      .sidebar { width: 60px; }
+      .sidebar .logo, .sidebar .user-info, .sidebar nav ul li span { display: none; }
+      .main { margin-left: 60px; }
+      .dashboard-content { padding: 18px 8px 24px 8px; }
+    }
+    @media (max-width: 600px) {
+      .projects-grid { grid-template-columns: 1fr; }
+      .main { margin-left: 0; }
+      .sidebar { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div>
+      <div class="logo"> <img src="icons/logo.png" alt="logo" style="width:28px;vertical-align:middle;"> EnviConnect</div>
+      <nav>
+        <ul>
+          <li class="active"><span>🏠</span> Dashboard</li>
+          <li onclick="window.location.href='home.html'"><span>📁</span> Projects</li>
+          <li><span>💬</span> Community</li>
+          <li><span>⚙️</span> Settings</li>
+        </ul>
+      </nav>
+    </div>
+    <div class="user">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+      <div class="user-info">
+        <div class="name">John Doe</div>
+        <div class="email">john.doe@example.com</div>
+      </div>
+    </div>
+  </div>
+  <div class="main">
+    <div class="topbar">
+      <span class="icon">🔍</span>
+      <button class="create-proj-btn" onclick="window.location.href='add_proj.html'">+ Create Project</button>
+      <span class="icon">🔔</span>
+    </div>
+    <div class="dashboard-content">
+      <div class="welcome">Welcome back, John!</div>
+      <div class="subtitle">Here are the latest projects you can contribute to.</div>
+      <div class="projects-grid" id="projectsGrid"></div>
+    </div>
+  </div>
+  <script>
+    const grid = document.getElementById("projectsGrid");
+
+  // Optionally, you can add more JS for the create project button here if needed
+
+    async function loadProjects() {
+      const res = await fetch("/api/projects");
+      const projects = await res.json();
+      grid.innerHTML = "";
+      projects.forEach(p => {
+        const imgSrc = (p.images && p.images.length > 0) ? (p.images[0].startsWith('uploads/') ? `/${p.images[0]}` : p.images[0]) : 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80';
+        const volunteers = p.volunteers || 0;
+        const volunteerGoal = p.volunteerGoal || 20;
+        const progress = Math.min(100, Math.round((volunteers / volunteerGoal) * 100));
+        grid.innerHTML += `
+          <div class="project-card" onclick="window.location.href='project.html?id=${p._id}'">
+            <img class="project-img" src="${imgSrc}" alt="Project Image">
+            <div class="project-content">
+              <div class="project-title">${p.name}</div>
+              <div class="project-desc">${p.brief ? p.brief.substring(0, 100) : ''}${p.brief && p.brief.length > 100 ? '...' : ''}</div>
+              <div class="volunteers">Volunteers</div>
+              <div class="progress-bar"><div class="progress" style="width:${progress}%"></div></div>
+              <button class="join-btn" onclick="event.stopPropagation();alert('Joined project!')">Join Project</button>
+            </div>
+          </div>
+        `;
+      });
+    }
+    loadProjects();
+  </script>
+</body>
+</html>
+  <style>
+    .create-proj-btn {
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px rgba(46,125,50,0.08);
+    }
+    .create-proj-btn:hover {
+      background: #388e3c;
+    }
+    @media (max-width: 900px) {
+      .create-proj-btn { padding: 8px 10px; font-size: 0.95rem; }
+    }
+    @media (max-width: 600px) {
+      .create-proj-btn { padding: 7px 6px; font-size: 0.92rem; }
+    }
+  </style>
