@@ -1,0 +1,339 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EnviConnect | Login</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .login-box { background: white; padding: 2rem; border-radius: 12px; width: 320px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .login-box h2 { text-align: center; margin-bottom: 1rem; }
+    .input-group { margin-bottom: 1rem; position: relative; }
+    .input-group input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; }
+    .btn { width: 100%; padding: 10px; background: #4caf50; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
+    .btn:hover { background: #45a049; }
+    .links { text-align: center; margin-top: 10px; font-size: 14px; }
+    .toast { position: fixed; bottom: 20px; right: 20px; background: #333; color: white; padding: 10px 20px; border-radius: 6px; opacity: 0; transition: opacity 0.5s ease-in-out; }
+    .toast.show { opacity: 1; }
+
+    .eye-icon {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        width: 22px;
+        height: 22px;
+        }
+
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Login</h2>
+    <div class="input-group">
+      <input type="text" id="login" placeholder="Username or Email">
+    </div>
+    <div class="input-group">
+      <input type="password" id="password" placeholder="Password">
+      <img src="icons/eye-off-line.png" id="toggleEye" class="eye-icon" onclick="togglePassword()">
+    </div>
+    <button class="btn" onclick="loginUser()">Login</button>
+    <div class="links">
+      <a href="#">Forgot password?</a> |
+      <a href="register.html">New to EnviConnect? Sign up</a>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EnviConnect | Login</title>
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", Arial, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+    }
+
+    /* Left Section (Login Form) */
+    .left-section {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+    }
+
+    .login-box {
+  width: 420px;
+  min-height: 320px;
+  background: #fff;
+  padding: 1.2rem 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .login-box h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 24px;
+      color: #111;
+    }
+
+    .input-group {
+  margin-bottom: 1.7rem;
+  position: relative;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+  margin-top: 18px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #256528;
+    }
+
+    .links {
+      text-align: center;
+  margin-top: 22px;
+      font-size: 14px;
+    }
+
+    .links a {
+      text-decoration: none;
+      color: #2e7d32;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    .eye-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      width: 22px;
+      height: 22px;
+    }
+
+    /* Right Section (Brand Info) */
+    .right-section {
+      flex: 1;
+      background: #f4f6f9;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem;
+      text-align: center;
+    }
+
+    .brand-name {
+      font-size: 32px;
+      font-weight: bold;
+      color: #2e7d32;
+      margin-bottom: 20px;
+    }
+
+    .brand-description {
+      font-size: 16px;
+      color: #444;
+      max-width: 400px;
+      line-height: 1.6;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #333;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Brand Info (Left) -->
+  <div class="right-section">
+    <div class="brand-name">🌱 EnviConnect</div>
+    <p class="brand-description">
+      EnviConnect bridges the gap between communities and sustainability projects. 
+      We empower people to join initiatives, share experiences, and make a real 
+      impact in creating a greener, cleaner future.
+    </p>
+  </div>
+
+  <!-- Login Box (Right) -->
+  <div class="left-section">
+    <div class="login-box">
+      <h2>Login</h2>
+      <div class="input-group">
+        <input type="text" id="login" placeholder="Username or Email">
+      </div>
+      <div class="input-group">
+        <input type="password" id="password" placeholder="Password">
+        <img src="icons/eye-off-line.png" id="toggleEye" class="eye-icon">
+      </div>
+      <button class="btn" onclick="loginUser()">Login</button>
+      <div class="links">
+        <a href="#">Forgot password?</a> <br><br>
+        <a href="register.html">New to EnviConnect? Sign up</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const passField = document.getElementById("password");
+    const eyeIcon = document.getElementById("toggleEye");
+
+    eyeIcon.addEventListener("mouseenter", () => {
+      passField.type = "text";
+      eyeIcon.src = "icons/eye-line.png"; // show password
+    });
+
+    eyeIcon.addEventListener("mouseleave", () => {
+      passField.type = "password";
+      eyeIcon.src = "icons/eye-off-line.png"; // hide password
+    });
+
+    async function loginUser() {
+      const login = document.getElementById("login").value;
+      const password = document.getElementById("password").value;
+
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ login, password })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        showToast(data.message);
+      } else {
+        showToast("✅ Login successful!");
+        setTimeout(() => window.location.href = "index.html", 1000);
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    async function checkUsername() {
+      const username = document.getElementById("username").value;
+      if (!username) return;
+      const res = await fetch(`/api/auth/check-username/${username}`);
+      const status = document.getElementById("usernameStatus");
+      if (res.ok) {
+        status.textContent = "✅ Available";
+        status.style.color = "green";
+      } else {
+        const data = await res.json();
+        status.textContent = `❌ ${data.message}`;
+        status.style.color = "red";
+      }
+    }
+
+    async function sendOtp() {
+      const email = document.getElementById("email").value;
+      const res = await fetch("/api/auth/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+      const data = await res.json();
+      showToast(data.message);
+    }
+
+    async function verifyOtp() {
+      const email = document.getElementById("email").value;
+      const otp = document.getElementById("otp").value;
+      const res = await fetch("/api/auth/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, otp })
+      });
+      const data = await res.json();
+      showToast(data.message);
+    }
+
+    async function registerUser() {
+      const name = document.getElementById("name").value;
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const age = document.getElementById("age").value;
+      const sustainabilityFocus = document.getElementById("sustainabilityFocus").value;
+
+      if (password !== confirmPassword) {
+        showToast("Passwords do not match");
+        return;
+      }
+
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, username, email, password, age, sustainabilityFocus })
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        showToast(data.message);
+      } else {
+        showToast("✅ Registered successfully!");
+        setTimeout(() => window.location.href = "login.html", 2000);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EnviConnect | Register</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", Arial, sans-serif;
+    }
+    body {
+      height: 100vh;
+      background: #f9f9f9;
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-bar {
+      width: 100vw;
+      background: #f9f9f9;
+      padding: 1.2rem 2.5rem 0.5rem 2.5rem;
+      display: flex;
+      align-items: center;
+    }
+    .brand-name {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #2e7d32;
+      letter-spacing: 1px;
+    }
+    .main-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+    }
+    .register-box {
+      width: 480px;
+      min-height: 520px;
+      background: #fff;
+      padding: 2.2rem 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .register-box h2 {
+      text-align: center;
+      margin-bottom: 0.5rem;
+      font-size: 26px;
+      color: #111;
+    }
+    .input-group {
+      margin-bottom: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    label {
+      font-weight: 500;
+      color: #333;
+      margin-bottom: 2px;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      background: #f6f6f6;
+    }
+    button {
+      width: 100%;
+      padding: 13px;
+      background: #2e7d32;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 17px;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #256528;
+    }
+    .links {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 15px;
+    }
+    .links a {
+      text-decoration: none;
+      color: #2e7d32;
+    }
+    .links a:hover {
+      text-decoration: underline;
+    }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #333;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      z-index: 999;
+    }
+    .toast.show {
+      opacity: 1;
+    }
+    @media (max-width: 600px) {
+      .register-box {
+        width: 98vw;
+        padding: 1rem;
+      }
+      .main-content {
+        padding: 0;
+      }
+      .brand-bar {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="brand-bar">
+    <div class="brand-name">🌱 EnviConnect</div>
+  </div>
+  <div class="main-content">
+    <div class="register-box">
+      <h2>Create Account</h2>
+      <form id="registerForm">
+        <div class="input-group">
+          <label>Username</label>
+          <input type="text" id="username" required>
+          <small id="usernameMsg"></small>
+        </div>
+        <div class="input-group">
+          <label>First Name</label>
+          <input type="text" id="firstName" required>
+        </div>
+        <div class="input-group">
+          <label>Last Name</label>
+          <input type="text" id="lastName" required>
+        </div>
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" id="email" required>
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="password" required>
+        </div>
+        <div class="input-group">
+          <label>Confirm Password</label>
+          <input type="password" id="confirmPassword" required>
+        </div>
+        <div class="input-group">
+          <label>State</label>
+          <select id="state" required></select>
+        </div>
+        <div class="input-group">
+          <label>City</label>
+          <select id="city" required></select>
+        </div>
+        <div class="input-group">
+          <label>Designation</label>
+          <select id="designation" required>
+            <option value="Student">Student</option>
+            <option value="Working">Working</option>
+            <option value="Business">Business</option>
+          </select>
+        </div>
+        <button type="submit">Register</button>
+      </form>
+      <div class="links">
+        Already have an account? <a href="login.html">Login</a>
+      </div>
+    </div>
+  </div>
+  <div id="toast" class="toast"></div>
+</body>
+
+<script>
+  const usernameField = document.getElementById("username");
+const usernameMsg = document.getElementById("usernameMsg");
+const stateDropdown = document.getElementById("state");
+const cityDropdown = document.getElementById("city");
+const toast = document.getElementById("toast");
+
+// Add placeholder to state dropdown
+const statePlaceholder = document.createElement("option");
+statePlaceholder.value = "";
+statePlaceholder.textContent = "Select State";
+statePlaceholder.disabled = true;
+statePlaceholder.selected = true;
+stateDropdown.appendChild(statePlaceholder);
+
+// Add placeholder to city dropdown
+const cityPlaceholder = document.createElement("option");
+cityPlaceholder.value = "";
+cityPlaceholder.textContent = "Select City";
+cityPlaceholder.disabled = true;
+cityPlaceholder.selected = true;
+cityDropdown.appendChild(cityPlaceholder);
+
+// Fetch Indian states from API
+fetch('https://countriesnow.space/api/v0.1/countries/states', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ country: 'India' })
+})
+.then(res => res.json())
+.then(data => {
+  if (data.data && data.data.states) {
+    data.data.states.forEach(stateObj => {
+      const option = document.createElement("option");
+      option.value = stateObj.name;
+      option.textContent = stateObj.name;
+      stateDropdown.appendChild(option);
+    });
+  }
+});
+
+// Fetch cities for selected state
+stateDropdown.addEventListener("change", () => {
+  cityDropdown.innerHTML = "";
+  // Add city placeholder again
+  const cityPlaceholder = document.createElement("option");
+  cityPlaceholder.value = "";
+  cityPlaceholder.textContent = "Select City";
+  cityPlaceholder.disabled = true;
+  cityPlaceholder.selected = true;
+  cityDropdown.appendChild(cityPlaceholder);
+  const selectedState = stateDropdown.value;
+  if (!selectedState) return;
+  fetch('https://countriesnow.space/api/v0.1/countries/state/cities', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ country: 'India', state: selectedState })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.data && Array.isArray(data.data)) {
+      data.data.forEach(city => {
+        const option = document.createElement("option");
+        option.value = city;
+        option.textContent = city;
+        cityDropdown.appendChild(option);
+      });
+    }
+  });
+});
+
+// Check username availability
+usernameField.addEventListener("blur", async () => {
+  const res = await fetch(`/api/auth/check-username/${usernameField.value}`);
+  const data = await res.json();
+  if (res.status === 400) {
+    usernameMsg.textContent = "❌ Username already taken";
+    usernameMsg.style.color = "red";
+  } else {
+    usernameMsg.textContent = "✅ Username available";
+    usernameMsg.style.color = "green";
+  }
+});
+
+
+// Toast function
+function showToast(msg, type) {
+  toast.textContent = msg;
+  toast.className = `toast ${type}`;
+  toast.style.display = "block";
+  setTimeout(() => toast.style.display = "none", 3000);
+}
+
+// Submit form
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const user = {
+    username: usernameField.value,
+    firstName: document.getElementById("firstName").value,
+    lastName: document.getElementById("lastName").value,
+    email: document.getElementById("email").value,
+    password: document.getElementById("password").value,
+    state: stateDropdown.value,
+    city: cityDropdown.value,
+    designation: document.getElementById("designation").value
+  };
+  const res = await fetch("/api/auth/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(user)
+  });
+  const data = await res.json();
+  if (data.success) {
+    showToast("Account created! Redirecting...", "success");
+    setTimeout(() => window.location.href = "login.html", 2000);
+  } else {
+    showToast(data.message, "error");
+  }
+});
+
+</script>
+</html>

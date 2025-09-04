@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EnviConnect | Project Details</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; margin: 0; }
+    .navbar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 20px; background: #2e7d32; color: white;
+    }
+    .container { width: 800px; margin: 20px auto; }
+    .project-box {
+      background: white; padding: 20px; border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px;
+    }
+    .project-box h2 { margin-top: 0; }
+    .join-btn {
+      background: #2e7d32; color: white; border: none;
+      padding: 10px 20px; border-radius: 4px; cursor: pointer;
+    }
+    .feed { margin-top: 20px; }
+    .post {
+      background: white; border-radius: 8px; padding: 15px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1); margin-bottom: 15px;
+    }
+    .comment { font-size: 14px; margin-left: 20px; color: #444; }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">🌱 EnviConnect</div>
+    <div><a href="index.html" style="color:white;text-decoration:none;">Home</a></div>
+  </div>
+
+  <div class="container">
+    <div class="project-box" id="projectDetails">
+      <!-- Filled by JS -->
+    </div>
+
+    <h3>Community Feed</h3>
+    <div class="project-box">
+      <textarea id="postInput" placeholder="Share an update..." style="width:100%;padding:10px;"></textarea>
+      <button class="join-btn" onclick="addPost()">Post</button>
+    </div>
+
+    <div class="feed" id="feed"></div>
+  </div>
+  <script>
+        const params = new URLSearchParams(window.location.search);
+        const projectId = params.get("id");
+        const projectDetails = document.getElementById("projectDetails");
+        const feedDiv = document.getElementById("feed");
+
+        async function loadProject() {
+        const res = await fetch(`/api/projects/${projectId}`);
+        const p = await res.json();
+
+        projectDetails.innerHTML = `
+            <h2>${p.name}</h2>
+            <p>${p.description}</p>
+            <button class="join-btn" onclick="joinProject()">Join Project</button>
+        `;
+        }
+
+        async function joinProject() {
+        await fetch(`/api/projects/${projectId}/join`, { method: "POST" });
+        alert("You joined the project!");
+        }
+
+        let posts = [];
+
+        function addPost() {
+        const text = document.getElementById("postInput").value;
+        if (!text) return;
+        posts.unshift({ user: "You", text });
+        renderFeed();
+        document.getElementById("postInput").value = "";
+        }
+
+        function renderFeed() {
+        feedDiv.innerHTML = "";
+        posts.forEach(post => {
+            const div = document.createElement("div");
+            div.className = "post";
+            div.innerHTML = `<strong>${post.user}</strong><p>${post.text}</p>`;
+            feedDiv.appendChild(div);
+        });
+        }
+
+        loadProject();
+
+  </script>
+</body>
+</html>
