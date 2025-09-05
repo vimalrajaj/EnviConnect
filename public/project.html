@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EnviConnect | Project Details</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
   <style>
     body {
@@ -13,81 +15,66 @@
       display: flex;
       min-height: 100vh;
     }
+    /* ======= SIDEBAR ======= */
     .sidebar {
-      width: 240px;
-      background: #eaf6ea;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border-right: 1px solid #d2e3d2;
-      min-height: 100vh;
       position: fixed;
       left: 0;
       top: 0;
-      bottom: 0;
+      width: 280px;
+      height: 100vh;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fcf8 100%);
+      box-shadow: 4px 0 20px rgba(46, 125, 50, 0.08);
+      z-index: 1000;
+      overflow-y: auto;
     }
+
     .sidebar .logo {
-      font-size: 1.7rem;
-      font-weight: bold;
+      padding: 32px 32px 24px;
+      font-size: 1.8rem;
+      font-weight: 800;
       color: #2e7d32;
-      padding: 32px 0 18px 32px;
-      letter-spacing: 1px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
+      border-bottom: 1px solid #e8f5e8;
     }
-    .sidebar nav {
-      flex: 1;
+
+    .sidebar .logo i {
+      font-size: 2rem;
+      background: linear-gradient(135deg, #2e7d32, #4caf50);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .sidebar nav ul {
-      list-style: none;
-      padding: 0 0 0 0;
-      margin: 0;
+
+    .sidebar-nav {
+      padding: 24px 0;
     }
-    .sidebar nav ul li {
+
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 16px;
       padding: 16px 32px;
-      font-size: 1.08rem;
-      color: #234d20;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-left: 4px solid transparent;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .sidebar nav ul li.active, .sidebar nav ul li:hover {
-      background: #d2e3d2;
-      border-left: 4px solid #2e7d32;
-      color: #2e7d32;
-    }
-    .sidebar .user {
-      padding: 24px 32px;
-      border-top: 1px solid #d2e3d2;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .sidebar .user img {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #b7e4c7;
-    }
-    .sidebar .user-info {
-      display: flex;
-      flex-direction: column;
-    }
-    .sidebar .user-info .name {
-      font-weight: 600;
-      font-size: 1rem;
-    }
-    .sidebar .user-info .email {
-      font-size: 0.92rem;
       color: #4b604b;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+    }
+
+    .sidebar-nav a:hover, .sidebar-nav a.active {
+      background: linear-gradient(135deg, rgba(46, 125, 50, 0.08), rgba(76, 175, 80, 0.05));
+      color: #2e7d32;
+      border-left-color: #2e7d32;
+    }
+
+    .sidebar-nav a i {
+      font-size: 1.2rem;
+      width: 20px;
     }
     .main {
-      margin-left: 240px;
+      margin-left: 280px;
       flex: 1;
       min-height: 100vh;
       background: #f4f9f4;
@@ -340,9 +327,11 @@
       background: #388e3c;
     }
     @media (max-width: 900px) {
-      .sidebar { width: 60px; }
-      .sidebar .logo, .sidebar .user-info, .sidebar nav ul li span { display: none; }
-      .main { margin-left: 60px; }
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      .main { margin-left: 0; }
       .project-details-container { padding: 18px 6px 18px 6px; }
     }
     @media (max-width: 600px) {
@@ -354,24 +343,29 @@
 </head>
 <body>
   <div class="sidebar">
-    <div>
-      <div class="logo"> <img src="icons/EnviConnect.png" alt="logo" style="width:28px;vertical-align:middle;"> EnviConnect</div>
-      <nav>
-        <ul>
-          <li onclick="window.location.href='home.html'"><span>🏠</span> Dashboard</li>
-          <li class="active"><span>📁</span> Projects</li>
-          <li><span>💬</span> Community</li>
-          <li><span>⚙️</span> Settings</li>
-        </ul>
-      </nav>
+    <div class="logo">
+      <i class="fas fa-leaf"></i>
+      EnviConnect
     </div>
-    <div class="user">
-      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
-      <div class="user-info">
-        <div class="name">John Doe</div>
-        <div class="email">john.doe@example.com</div>
-      </div>
-    </div>
+    
+    <nav class="sidebar-nav">
+      <a href="home.html">
+        <i class="fas fa-home"></i>
+        Dashboard
+      </a>
+      <a href="profile.html">
+        <i class="fas fa-user"></i>
+        Profile
+      </a>
+      <a href="project.html" class="active">
+        <i class="fas fa-project-diagram"></i>
+        Projects
+      </a>
+      <a href="#" onclick="logoutUser()">
+        <i class="fas fa-sign-out-alt"></i>
+        Logout
+      </a>
+    </nav>
   </div>
   <div class="main">
     <div class="topbar">
@@ -386,6 +380,13 @@
     const params = new URLSearchParams(window.location.search);
     const projectId = params.get("id");
     const projectDetailsContainer = document.getElementById("projectDetailsContainer");
+
+    function logoutUser() {
+      // A logout function might be needed here if it's not globally available
+      localStorage.removeItem('user');
+      sessionStorage.removeItem('userId');
+      window.location.href = 'login.html';
+    }
 
     // Demo avatars for feed
     const demoAvatars = [

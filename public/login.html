@@ -37,7 +37,7 @@
     </div>
     <div class="input-group">
       <input type="password" id="password" placeholder="Password">
-      <img src="icons/eye-off-line.png" id="toggleEye" class="eye-icon" onclick="togglePassword()">
+      <img src="icons/eye-off-line.png" id="toggleEye" class="eye-icon" alt="Toggle password visibility">
     </div>
     <button class="btn" onclick="loginUser()">Login</button>
     <div class="links">
@@ -55,6 +55,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EnviConnect | Login</title>
   <style>
     /* Reset */
@@ -210,13 +211,13 @@
     <div class="login-box">
       <h2>Login</h2>
       <div class="input-group">
-        <input type="text" id="login" placeholder="Username or Email">
+        <input type="text" id="login" placeholder="Username or Email" required>
       </div>
       <div class="input-group">
-        <input type="password" id="password" placeholder="Password">
-        <img src="icons/eye-off-line.png" id="toggleEye" class="eye-icon">
+        <input type="password" id="password" placeholder="Password" required>
+        <img src="icons/eye-off-line.png" id="toggleEye" class="eye-icon" alt="Toggle password visibility">
       </div>
-      <button class="btn" onclick="loginUser()">Login</button>
+      <button type="submit" class="btn" onclick="loginUser()">Login</button>
       <div class="links">
         <a href="#">Forgot password?</a> <br><br>
         <a href="register.html">New to EnviConnect? Sign up</a>

@@ -2,362 +2,652 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile | EnviConnect</title>
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       font-family: 'Poppins', Arial, sans-serif;
-      background: #eaf6ea;
+      background: linear-gradient(135deg, #f0f8f0 0%, #e8f5e8 100%);
       color: #234d20;
-      display: flex;
       min-height: 100vh;
     }
+
+    /* ======= SIDEBAR ======= */
     .sidebar {
-      width: 240px;
-      background: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border-right: 1px solid #d2e3d2;
-      min-height: 100vh;
       position: fixed;
       left: 0;
       top: 0;
-      bottom: 0;
+      width: 280px;
+      height: 100vh;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fcf8 100%);
+      box-shadow: 4px 0 20px rgba(46, 125, 50, 0.08);
+      z-index: 1000;
+      overflow-y: auto;
     }
+
     .sidebar .logo {
-      font-size: 1.7rem;
-      font-weight: bold;
+      padding: 32px 32px 24px;
+      font-size: 1.8rem;
+      font-weight: 800;
       color: #2e7d32;
-      padding: 32px 0 18px 32px;
-      letter-spacing: 1px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
+      border-bottom: 1px solid #e8f5e8;
     }
-    .sidebar nav {
-      flex: 1;
+
+    .sidebar .logo i {
+      font-size: 2rem;
+      background: linear-gradient(135deg, #2e7d32, #4caf50);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .sidebar nav ul {
-      list-style: none;
-      padding: 0 0 0 0;
-      margin: 0;
+
+    .sidebar-nav {
+      padding: 24px 0;
     }
-    .sidebar nav ul li {
+
+    .sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 16px;
       padding: 16px 32px;
-      font-size: 1.08rem;
-      color: #234d20;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border-left: 4px solid transparent;
-      transition: background 0.2s, border-color 0.2s;
-    }
-    .sidebar nav ul li.active, .sidebar nav ul li:hover {
-      background: #eaf6ea;
-      border-left: 4px solid #2e7d32;
-      color: #2e7d32;
-    }
-    .sidebar .user {
-      padding: 24px 32px;
-      border-top: 1px solid #d2e3d2;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .sidebar .user img {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #b7e4c7;
-    }
-    .sidebar .user-info {
-      display: flex;
-      flex-direction: column;
-    }
-    .sidebar .user-info .name {
-      font-weight: 600;
-      font-size: 1rem;
-    }
-    .sidebar .user-info .email {
-      font-size: 0.92rem;
       color: #4b604b;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
     }
-    .main {
-      margin-left: 240px;
-      flex: 1;
-      min-height: 100vh;
-      background: #eaf6ea;
-      display: flex;
-      flex-direction: column;
-    }
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding: 24px 36px 0 36px;
-      gap: 18px;
-    }
-    .topbar .icon {
-      font-size: 1.3rem;
+
+    .sidebar-nav a:hover, .sidebar-nav a.active {
+      background: linear-gradient(135deg, rgba(46, 125, 50, 0.08), rgba(76, 175, 80, 0.05));
       color: #2e7d32;
-      cursor: pointer;
-      margin-left: 10px;
+      border-left-color: #2e7d32;
     }
-    .profile-container {
-      max-width: 1100px;
-      margin: 36px auto 0 auto;
-      background: #eaf6ea;
-      border-radius: 16px;
-      padding: 0 40px 32px 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
+
+    .sidebar-nav a i {
+      font-size: 1.2rem;
+      width: 20px;
     }
-    .profile-header {
-      background: #fff;
-      border-radius: 16px;
-      padding: 32px 36px;
+
+    /* ======= TOP NAVIGATION ======= */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 280px;
+      right: 0;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.95);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
       display: flex;
       align-items: center;
-      gap: 32px;
-      box-shadow: 0 2px 12px rgba(46,125,50,0.07);
-      margin-bottom: 18px;
+      justify-content: space-between;
+      padding: 0 32px;
+      box-shadow: 0 2px 20px rgba(46, 125, 50, 0.08);
+      z-index: 999;
     }
-    .profile-avatar {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #b7e4c7;
-      background: #eaf6ea;
+
+    .search-container {
+      flex: 1;
+      max-width: 500px;
+      margin: 0 32px;
+      position: relative;
     }
-    .profile-info {
+
+    .search-container input {
+      width: 100%;
+      padding: 12px 48px 12px 20px;
+      border: 2px solid #e8f5e8;
+      border-radius: 25px;
+      font-size: 0.95rem;
+      font-family: 'Poppins', sans-serif;
+      background: #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    .search-container input:focus {
+      outline: none;
+      border-color: #2e7d32;
+      box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.1);
+    }
+
+    .search-container i {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #4b604b;
+      font-size: 1.1rem;
+    }
+
+    .topbar-right {
       display: flex;
-      flex-direction: column;
-      gap: 8px;
+      align-items: center;
+      gap: 24px;
     }
+
+    .notification-icon {
+      position: relative;
+      color: #4b604b;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .notification-icon:hover {
+      color: #2e7d32;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #f44336;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid #2e7d32;
+      object-fit: cover;
+    }
+
+    .user-details span {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #2e7d32;
+    }
+
+    /* ======= MAIN CONTENT ======= */
+    .main-content {
+      margin-left: 280px;
+      padding-top: 80px;
+      min-height: 100vh;
+    }
+
+    .content-wrapper {
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      max-width: 1400px;
+    }
+
+    /* ======= PROFILE CARD ======= */
+    .profile-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(46, 125, 50, 0.12);
+      height: fit-content;
+    }
+
+    .profile-cover {
+      height: 200px;
+      background: linear-gradient(135deg, #2e7d32 0%, #4caf50 50%, #66bb6a 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="3" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="80" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+      opacity: 0.3;
+    }
+
+    .profile-avatar {
+      position: absolute;
+      bottom: -50px;
+      left: 32px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 5px solid white;
+      background: white;
+      box-shadow: 0 8px 24px rgba(46, 125, 50, 0.2);
+      object-fit: cover;
+    }
+
+    .profile-info {
+      padding: 64px 32px 32px;
+    }
+
     .profile-name {
-      font-size: 2.1rem;
+      font-size: 1.8rem;
       font-weight: 700;
       color: #234d20;
+      margin-bottom: 8px;
     }
-    .profile-email {
-      font-size: 1.15rem;
-      color: #4b604b;
-      margin-bottom: 6px;
-    }
+
     .profile-bio {
-      font-size: 1.08rem;
-      color: #234d20;
-      margin-top: 8px;
+      color: #4b604b;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
     }
-    .section-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 18px;
-      color: #234d20;
-    }
-    .projects-list {
-      display: flex;
-      gap: 28px;
-      flex-wrap: wrap;
-    }
-    .project-card {
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 2px 12px rgba(46,125,50,0.07);
-      padding: 0 0 18px 0;
-      display: flex;
-      flex-direction: column;
-      width: 320px;
-      cursor: pointer;
-      border: 1px solid #e0e8e0;
-      margin-bottom: 18px;
-    }
-    .project-img {
-      width: 100%;
-      height: 170px;
-      object-fit: cover;
-      border-radius: 14px 14px 0 0;
-      background: #eaf6ea;
-    }
-    .project-title {
-      font-size: 1.18rem;
-      font-weight: 600;
-      margin: 14px 0 0 18px;
-      color: #234d20;
-    }
-    .project-tabs {
+
+    .profile-actions {
       display: flex;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 32px;
     }
-    .project-tab {
-      background: #d2e3d2;
-      color: #234d20;
+
+    .btn {
+      padding: 12px 24px;
       border: none;
-      border-radius: 8px;
-      padding: 8px 18px;
-      font-size: 1rem;
+      border-radius: 12px;
+      font-family: 'Poppins', sans-serif;
       font-weight: 600;
+      font-size: 0.9rem;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .project-tab.active {
-      background: #2e7d32;
-      color: #fff;
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2e7d32, #4caf50);
+      color: white;
     }
-    @media (max-width: 900px) {
-      .sidebar { width: 60px; }
-      .sidebar .logo, .sidebar .user-info, .sidebar nav ul li span { display: none; }
-      .main { margin-left: 60px; }
-      .profile-container { padding: 0 8px 18px 8px; }
-      .profile-header { flex-direction: column; align-items: flex-start; gap: 18px; }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(46, 125, 50, 0.3);
     }
-    @media (max-width: 600px) {
-      .main { margin-left: 0; }
-      .sidebar { display: none; }
-      .profile-container { padding: 0 2px 8px 2px; }
+
+    .btn-secondary {
+      background: #f8fcf8;
+      color: #2e7d32;
+      border: 2px solid #e8f5e8;
+    }
+
+    .btn-secondary:hover {
+      background: #e8f5e8;
+      transform: translateY(-2px);
+    }
+
+    /* ======= STATS SECTION ======= */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #f8fcf8, #ffffff);
+      border-radius: 16px;
+      border: 1px solid #e8f5e8;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #2e7d32;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #4b604b;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    /* ======= USER DETAILS ======= */
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f8f0;
+    }
+
+    .detail-item:last-child {
+      border-bottom: none;
+    }
+
+    .detail-item i {
+      width: 20px;
+      color: #2e7d32;
+      font-size: 1.1rem;
+    }
+
+    .detail-text {
+      color: #4b604b;
+      font-size: 0.95rem;
+    }
+
+    /* ======= PERFORMANCE SECTION ======= */
+    .performance-card {
+      background: white;
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 8px 32px rgba(46, 125, 50, 0.12);
+      height: fit-content;
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #234d20;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-title i {
+      color: #2e7d32;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 300px;
+      margin-bottom: 32px;
+    }
+
+    .recent-projects-container {
+      grid-column: unset; 
+      display: block;
+    }
+
+    .recent-projects-title {
+      margin-bottom: 16px;
+      color: #234d20;
+    }
+
+    /* ======= BOTTOM SECTION ======= */
+    .bottom-section {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .info-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(46, 125, 50, 0.08);
+      text-align: center;
+    }
+
+    .info-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #234d20;
+      margin-bottom: 12px;
+    }
+
+    .info-card .number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #2e7d32, #4caf50);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .info-card .label {
+      color: #4b604b;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    /* ======= LOADING STATE ======= */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      color: #4b604b;
+      font-size: 1.1rem;
+    }
+
+    .loading i {
+      margin-right: 12px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* ======= RESPONSIVE DESIGN ======= */
+    @media (max-width: 1024px) {
+      .content-wrapper {
+        grid-template-columns: 1fr;
+        padding: 24px;
+      }
+      
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .topbar {
+        left: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .topbar {
+        padding: 0 16px;
+      }
+      
+      .search-container {
+        margin: 0 16px;
+      }
+      
+      .content-wrapper {
+        padding: 16px;
+        gap: 20px;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Sidebar -->
   <div class="sidebar">
-    <div>
-      <div class="logo"> <img src="icons/EnviConnect.png" alt="logo" style="width:28px;vertical-align:middle;"> EnviConnect</div>
-      <nav>
-        <ul>
-          <li onclick="window.location.href='home.html'"><span>🏠</span> Dashboard</li>
-          <li class="active"><span>🍃</span> Projects</li>
-          <li><span>👥</span> Community</li>
-          <li><span>⚙️</span> Settings</li>
-        </ul>
-      </nav>
+    <div class="logo">
+      <i class="fas fa-leaf"></i>
+      EnviConnect
     </div>
-    <div class="user">
-      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
-      <div class="user-info">
-        <div class="name" id="sidebarUserName">John Doe</div>
-        <div class="email" id="sidebarUserEmail">john.doe@example.com</div>
-      </div>
-    </div>
+    
+    <nav class="sidebar-nav">
+      <a href="index.html">
+        <i class="fas fa-home"></i>
+        Dashboard
+      </a>
+      <a href="profile.html" class="active">
+        <i class="fas fa-user"></i>
+        Profile
+      </a>
+      <a href="project.html">
+        <i class="fas fa-project-diagram"></i>
+        Projects
+      </a>
+      <a href="#" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        Logout
+      </a>
+    </nav>
   </div>
-  <div class="main">
-    <div class="topbar">
-      <span class="icon">🔍</span>
-      <span class="icon">🔔</span>
+
+  <!-- Top Navigation -->
+  <div class="topbar">
+    <div class="search-container">
+      <input type="text" placeholder="Search projects, users, or topics...">
+      <i class="fas fa-search"></i>
     </div>
-    <div class="profile-container">
-      <div class="section-title">Profile</div>
-      <div class="profile-header">
-        <img class="profile-avatar" id="profileAvatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
-        <div class="profile-info">
-          <div class="profile-name" id="profileName">John Doe</div>
-          <div class="profile-email" id="profileEmail">john.doe@example.com</div>
-          <div class="profile-bio" id="profileBio">Passionate about environmental conservation and community building. Member since 2023.</div>
+    
+    <div class="topbar-right">
+      <div class="notification-icon">
+        <i class="fas fa-bell"></i>
+        <span class="notification-badge">3</span>
+      </div>
+      
+      <div class="user-info" id="currentUser">
+        <img src="https://via.placeholder.com/40/2e7d32/ffffff?text=U" alt="User" class="user-avatar" id="topbarAvatar">
+        <div class="user-details">
+          <span id="topbarUsername">Loading...</span>
         </div>
       </div>
-      <div class="section-title">Projects Created</div>
-      <div class="projects-list" id="createdProjects">
-        <!-- Created projects will be rendered here -->
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="content-wrapper">
+      <!-- Profile Card -->
+      <div class="profile-card">
+        <div class="profile-cover">
+          <img src="" alt="Profile" class="profile-avatar" id="profileAvatar">
+        </div>
+        
+        <div class="profile-info">
+          <h1 class="profile-name" id="profileName">Loading...</h1>
+          <p class="profile-bio" id="profileBio">Loading bio...</p>
+          
+          <div class="profile-actions">
+            <button class="btn btn-primary" onclick="editProfile()">
+              <i class="fas fa-edit"></i>
+              Edit Profile
+            </button>
+            <button class="btn btn-secondary" onclick="openSettings()">
+              <i class="fas fa-cog"></i>
+              Settings
+            </button>
+          </div>
+          
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-number" id="projectsCreated">0</span>
+              <span class="stat-label">Projects Created</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" id="projectsJoined">0</span>
+              <span class="stat-label">Projects Joined</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" id="contributions">0</span>
+              <span class="stat-label">Contributions</span>
+            </div>
+          </div>
+          
+          <div class="user-details">
+            <div class="detail-item">
+              <i class="fas fa-envelope"></i>
+              <span class="detail-text" id="profileEmail">loading@email.com</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span class="detail-text" id="profileLocation">Loading location...</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-briefcase"></i>
+              <span class="detail-text" id="profileDesignation">Loading designation...</span>
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-calendar-alt"></i>
+              <span class="detail-text" id="joinDate">Joined recently</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="section-title">Projects Joined</div>
-      <div class="project-tabs">
-        <button class="project-tab active" onclick="showJoined('ongoing')" id="tabOngoing">Ongoing</button>
-        <button class="project-tab" onclick="showJoined('upcoming')" id="tabUpcoming">Upcoming</button>
-        <button class="project-tab" onclick="showJoined('completed')" id="tabCompleted">Completed</button>
+
+      <!-- Performance/Activity Card -->
+      <div class="performance-card">
+        <h2 class="card-title">
+          <i class="fas fa-chart-line"></i>
+          Project Activity
+        </h2>
+        
+        <div class="chart-container">
+          <canvas id="activityChart"></canvas>
+        </div>
+        
+        <div class="recent-projects-container">
+          <h3 class="recent-projects-title">Recent Projects</h3>
+          <div id="recentProjects" class="loading">
+            <i class="fas fa-spinner"></i>
+            Loading projects...
+          </div>
+        </div>
       </div>
-      <div class="projects-list" id="joinedProjects">
-        <!-- Joined projects will be rendered here -->
+
+      <!-- Bottom Section - Engagement Stats -->
+      <div class="bottom-section">
+        <div class="info-card">
+          <h3>Project Categories</h3>
+          <span class="number" id="categoriesCount">0</span>
+          <span class="label">Different themes covered</span>
+        </div>
+        
+        <div class="info-card">
+          <h3>Community Impact</h3>
+          <span class="number" id="followersCount">0</span>
+          <span class="label">People reached</span>
+        </div>
+        
+        <div class="info-card">
+          <h3>Total Engagement</h3>
+          <span class="number" id="totalEngagement">0</span>
+          <span class="label">Likes & acknowledgments</span>
+        </div>
       </div>
     </div>
   </div>
-  <script>
-    // Load user info from localStorage
-    function loadUserProfile() {
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user) {
-        document.getElementById('profileName').textContent = user.name || user.username || 'User';
-        document.getElementById('profileEmail').textContent = user.email || '';
-        if (user.img) {
-          document.getElementById('profileAvatar').src = user.img;
-        }
-        // Example bio, you can make this dynamic later
-        document.getElementById('profileBio').textContent = user.bio || 'Passionate about environmental conservation and community building. Member since 2023.';
-        document.getElementById('sidebarUserName').textContent = user.name || user.username || 'User';
-        document.getElementById('sidebarUserEmail').textContent = user.email || '';
-      }
-    }
-    loadUserProfile();
 
-    // Demo projects data
-    const demoProjects = [
-      {
-        name: 'Community Garden Initiative',
-        img: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80',
-        status: 'ongoing'
-      },
-      {
-        name: 'River Cleanup Project',
-        img: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80',
-        status: 'completed'
-      }
-    ];
-
-    async function renderCreatedProjects() {
-      const container = document.getElementById('createdProjects');
-      container.innerHTML = '';
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (!user || !user._id) return;
-      try {
-        const res = await fetch(`/api/projects/created/${user._id}`);
-        const projects = await res.json();
-        if (Array.isArray(projects) && projects.length > 0) {
-          projects.forEach(p => {
-            const imgSrc = (p.images && p.images.length > 0) ? (p.images[0].startsWith('uploads/') ? `/${p.images[0]}` : p.images[0]) : 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80';
-            container.innerHTML += `
-              <div class="project-card">
-                <img class="project-img" src="${imgSrc}" alt="Project Image">
-                <div class="project-title">${p.name}</div>
-              </div>
-            `;
-          });
-        } else {
-          container.innerHTML = '<div style="color:#4b604b;padding:18px;">No projects created yet.</div>';
-        }
-      } catch (err) {
-        container.innerHTML = '<div style="color:#d32f2f;padding:18px;">Error loading projects.</div>';
-      }
-    }
-    renderCreatedProjects();
-
-    // Tabs for joined projects
-    function showJoined(type) {
-      document.getElementById('tabOngoing').classList.remove('active');
-      document.getElementById('tabUpcoming').classList.remove('active');
-      document.getElementById('tabCompleted').classList.remove('active');
-      document.getElementById('tab' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active');
-      renderJoinedProjects(type);
-    }
-
-    function renderJoinedProjects(type) {
-      const container = document.getElementById('joinedProjects');
-      container.innerHTML = '';
-      // For demo, show same projects for all tabs
-      demoProjects.forEach(p => {
-        container.innerHTML += `
-          <div class="project-card">
-            <img class="project-img" src="${p.img}" alt="Project Image">
-            <div class="project-title">${p.name}</div>
-          </div>
-        `;
-      });
-    }
-    showJoined('ongoing');
-  </script>
+  <!-- Include external profile JavaScript -->
+  <script src="profile.js"></script>
 </body>
 </html>

@@ -1,8 +1,9 @@
-// GET projects created by a specific use
 const express = require("express");
 const router = express.Router();
 const Project = require("../models/Project");
 const multer = require("multer");
+
+// GET projects created by a specific user
 
 // Multer setup for image uploads
 const storage = multer.diskStorage({
@@ -67,6 +68,22 @@ router.get("/:id", async (req, res) => {
     res.json(project);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch project" });
+  }
+});
+
+// POST route to join a project
+router.post("/:id/join", async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) {
+      return res.status(404).json({ error: "Project not found" });
+    }
+    project.volunteers += 1;
+    await project.save();
+    res.json({ message: "Successfully joined project", volunteers: project.volunteers });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
   }
 });
 

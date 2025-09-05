@@ -2,160 +2,503 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Add Project | EnviConnect</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Project | EnviConnect</title>
   <link rel="stylesheet" href="style.css">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f5f9f6;
       margin: 0;
-      padding: 0;
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #f4f9f4;
+      color: #234d20;
+      display: flex;
+      min-height: 100vh;
     }
-    .container {
-      width: 60%;
-      margin: 40px auto;
-      background: white;
-      padding: 20px 30px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+    /* Sidebar (matching your existing design) */
+    .sidebar {
+      width: 240px;
+      background: #eaf6ea;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid #d2e3d2;
+      min-height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
     }
-    h2 {
-      text-align: center;
-      color: #2f855a;
-    }
-    .form-group {
-      margin-bottom: 18px;
-    }
-    label {
-      display: block;
+
+    .sidebar .logo {
+      font-size: 1.7rem;
       font-weight: bold;
-      margin-bottom: 6px;
+      color: #2e7d32;
+      padding: 32px 0 18px 32px;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+
+    .sidebar nav {
+      flex: 1;
     }
-    textarea {
-      resize: vertical;
+
+    .sidebar nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
-    .small-note {
-      font-size: 12px;
-      color: #555;
+
+    .sidebar nav ul li {
+      padding: 16px 32px;
+      font-size: 1.08rem;
+      color: #234d20;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-left: 4px solid transparent;
+      transition: background 0.2s, border-color 0.2s;
     }
-    button {
-      background: #2f855a;
-      color: white;
-      padding: 12px 20px;
+
+    .sidebar nav ul li.active, .sidebar nav ul li:hover {
+      background: #d2e3d2;
+      border-left: 4px solid #2e7d32;
+      color: #2e7d32;
+    }
+
+    /* Main Content */
+    .main {
+      margin-left: 240px;
+      flex: 1;
+      min-height: 100vh;
+      background: #f4f9f4;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 36px 0 36px;
+      gap: 18px;
+    }
+
+    .topbar h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #234d20;
+      margin: 0;
+    }
+
+    .back-btn {
+      background: #2e7d32;
+      color: #fff;
       border: none;
       border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-btn:hover {
+      background: #256528;
+    }
+
+    /* Form Container */
+    .form-container {
+      max-width: 800px;
+      margin: 24px auto 36px auto;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(46,125,50,0.07);
+      padding: 40px;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .form-header h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #234d20;
+      margin: 0 0 8px 0;
+    }
+
+    .form-header p {
+      color: #4b604b;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+
+    /* Form Groups */
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: #234d20;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid #e0e8e0;
+      border-radius: 12px;
+      font-size: 1rem;
+      color: #234d20;
+      background: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-family: 'Poppins', Arial, sans-serif;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #2e7d32;
+      box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .word-count {
+      font-size: 0.9rem;
+      color: #4b604b;
+      text-align: right;
+      margin-top: 4px;
+    }
+
+    .word-count.warning {
+      color: #d32f2f;
+    }
+
+    /* File Upload */
+    .file-upload {
+      border: 2px dashed #d2e3d2;
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      background: #f8fcf8;
+      transition: border-color 0.2s, background 0.2s;
       cursor: pointer;
     }
-    button:hover {
-      background: #276749;
+
+    .file-upload:hover {
+      border-color: #2e7d32;
+      background: #eaf6ea;
+    }
+
+    .file-upload.dragover {
+      border-color: #2e7d32;
+      background: #eaf6ea;
+    }
+
+    .file-upload-icon {
+      font-size: 2.5rem;
+      color: #2e7d32;
+      margin-bottom: 16px;
+    }
+
+    .file-upload-text {
+      font-size: 1.1rem;
+      color: #234d20;
+      margin-bottom: 8px;
+    }
+
+    .file-upload-hint {
+      font-size: 0.9rem;
+      color: #4b604b;
+    }
+
+    #images {
+      display: none;
+    }
+
+    /* Preview Images */
+    .image-preview {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .preview-item {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid #e0e8e0;
+    }
+
+    .preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .remove-image {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: #d32f2f;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Submit Button */
+    .submit-btn {
+      width: 100%;
+      background: #2e7d32;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 16px 24px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      margin-top: 24px;
+    }
+
+    .submit-btn:hover {
+      background: #256528;
+      transform: translateY(-1px);
+    }
+
+    .submit-btn:disabled {
+      background: #a5c9a5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Loading State */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid transparent;
+      border-top: 2px solid #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #2e7d32;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .toast.error {
+      background: #d32f2f;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 900px) {
+      .sidebar { width: 60px; }
+      .sidebar .logo, .sidebar nav ul li span { display: none; }
+      .main { margin-left: 60px; }
+      .form-container { margin: 24px 16px 36px 16px; padding: 24px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .main { margin-left: 0; }
+      .sidebar { display: none; }
+      .form-container { margin: 16px 8px 24px 8px; padding: 20px; }
+      .topbar { padding: 16px 20px 0 20px; }
     }
   </style>
 </head>
 <body>
-
-  <div class="container">
-    <h2>Create a New Project</h2>
-  <form id="projectForm" enctype="multipart/form-data">
-
-      <!-- Theme -->
-      <div class="form-group">
-        <label for="theme">Project Theme</label>
-        <select id="theme" name="theme" required>
-          <option value="">Select Theme</option>
-          <option>Renewable Energy</option>
-          <option>Waste Management</option>
-          <option>Tree Plantation</option>
-          <option>Awareness Campaign</option>
-          <option>Sustainable Farming</option>
-          <option>Others</option>
-        </select>
-      </div>
-
-      <!-- Name -->
-      <div class="form-group">
-        <label for="name">Project Name</label>
-        <input type="text" id="name" name="name" required>
-      </div>
-
-      <!-- Duration -->
-      <div class="form-group">
-        <label for="duration">Duration</label>
-        <input type="text" id="duration" name="duration" placeholder="e.g. 2 Weeks / 01-10-2025 to 15-10-2025" required>
-      </div>
-
-      <!-- Location -->
-      <div class="form-group">
-        <label for="location">Location</label>
-        <input type="text" id="location" name="location" required>
-      </div>
-
-      <!-- Brief description -->
-      <div class="form-group">
-        <label for="brief">Brief Description (max 100 words)</label>
-        <textarea id="brief" name="brief" maxlength="600" required></textarea>
-        <p class="small-note">Limit: 100 words</p>
-      </div>
-
-      <!-- Detailed description -->
-      <div class="form-group">
-        <label for="details">Detailed Description</label>
-        <textarea id="details" name="details" rows="6" required></textarea>
-      </div>
-
-      <!-- Images -->
-      <div class="form-group">
-        <label for="images">Upload Images</label>
-        <input type="file" id="images" name="images" multiple accept="image/*">
-      </div>
-
-      <!-- Additional Info -->
-      <div class="form-group">
-        <label for="info">Additional Info for Participants</label>
-        <textarea id="info" name="info" rows="4" placeholder="e.g. Bring gloves, Water provided"></textarea>
-      </div>
-
-      <!-- Captcha -->
-      <div class="form-group">
-        <label for="captcha">Captcha: 3 + 5 = ?</label>
-        <input type="text" id="captcha" name="captcha" required>
-      </div>
-
-      <button type="submit">Submit Project</button>
-    </form>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div>
+      <div class="logo">🌱 EnviConnect</div>
+      <nav>
+        <ul>
+          <li onclick="window.location.href='home.html'"><span>🏠</span> Dashboard</li>
+          <li class="active"><span>➕</span> Create Project</li>
+          <li onclick="window.location.href='profile.html'"><span>👤</span> Profile</li>
+          <li><span>📊</span> Analytics</li>
+          <li><span>⚙️</span> Settings</li>
+        </ul>
+      </nav>
+    </div>
   </div>
 
-  <script>
-    document.getElementById('projectForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const form = e.target;
-      const formData = new FormData(form);
-      // Attach owner (user id) from localStorage
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user && (user.username || user.name)) {
-        formData.append('owner', user.username || user.name);
-      }
-      try {
-        const res = await fetch('/api/projects/add', {
-          method: 'POST',
-          body: formData
-        });
-        if (res.ok) {
-          window.location.href = 'home.html';
-        } else {
-          const data = await res.json();
-          alert(data.message || 'Failed to create project.');
-        }
-      } catch (err) {
-        alert('Error submitting project.');
-      }
-    });
-  </script>
+  <!-- Main Content -->
+  <div class="main">
+    <div class="topbar">
+      <h1>Create New Project</h1>
+      <a href="home.html" class="back-btn">
+        ← Back to Dashboard
+      </a>
+    </div>
 
+    <div class="form-container">
+      <div class="form-header">
+        <h2>Share Your Environmental Initiative</h2>
+        <p>Create a project to connect with like-minded individuals and make a positive impact</p>
+      </div>
+
+      <form id="projectForm" enctype="multipart/form-data">
+        <!-- Project Theme and Name -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="theme">Project Theme *</label>
+            <select id="theme" name="theme" required>
+              <option value="">Select a theme</option>
+              <option value="Renewable Energy">🔋 Renewable Energy</option>
+              <option value="Waste Management">♻️ Waste Management</option>
+              <option value="Tree Plantation">🌳 Tree Plantation</option>
+              <option value="Awareness Campaign">📢 Awareness Campaign</option>
+              <option value="Sustainable Farming">🌾 Sustainable Farming</option>
+              <option value="Water Conservation">💧 Water Conservation</option>
+              <option value="Clean Transportation">🚲 Clean Transportation</option>
+              <option value="Others">🔧 Others</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Project Name *</label>
+            <input type="text" id="name" name="name" placeholder="Enter your project name" required>
+          </div>
+        </div>
+
+        <!-- Duration and Location -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="duration">Duration *</label>
+            <select id="duration" name="duration" required>
+              <option value="">Select duration</option>
+              <option value="1 day">1 Day</option>
+              <option value="1 week">1 Week</option>
+              <option value="2 weeks">2 Weeks</option>
+              <option value="1 month">1 Month</option>
+              <option value="3 months">3 Months</option>
+              <option value="6 months">6 Months</option>
+              <option value="1 year">1 Year</option>
+              <option value="Ongoing">Ongoing</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="location">Location *</label>
+            <input type="text" id="location" name="location" placeholder="City, State or Region" required>
+          </div>
+        </div>
+
+        <!-- Brief Description -->
+        <div class="form-group">
+          <label for="brief">Brief Description *</label>
+          <textarea id="brief" name="brief" placeholder="Provide a compelling summary of your project (max 100 words)" required maxlength="600"></textarea>
+          <div class="word-count" id="briefWordCount">0/100 words</div>
+        </div>
+
+        <!-- Detailed Description -->
+        <div class="form-group">
+          <label for="details">Detailed Description *</label>
+          <textarea id="details" name="details" placeholder="Describe your project goals, methodology, expected outcomes, and how others can contribute" required></textarea>
+        </div>
+
+        <!-- Project Images -->
+        <div class="form-group">
+          <label for="images">Project Images</label>
+          <div class="file-upload" onclick="document.getElementById('images').click()">
+            <div class="file-upload-icon">📷</div>
+            <div class="file-upload-text">Click to upload images</div>
+            <div class="file-upload-hint">Or drag and drop files here (PNG, JPG, up to 5MB each)</div>
+          </div>
+          <input type="file" id="images" name="images" multiple accept="image/*">
+          <div class="image-preview" id="imagePreview"></div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="form-group">
+          <label for="info">Additional Information</label>
+          <textarea id="info" name="info" placeholder="Any other relevant details, requirements, or contact information"></textarea>
+        </div>
+
+        <!-- Hidden Owner Field -->
+        <input type="hidden" id="owner" name="owner" value="current-user-id">
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn" id="submitBtn">
+          Create Project
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="add_proj_script.js"></script>
+  <script>
+    // Additional utility functions for sidebar
+    function showAnalytics() {
+      alert('📊 Analytics feature coming soon!');
+    }
+
+    function showSettings() {
+      alert('⚙️ Settings feature coming soon!');
+    }
+  </script>
 </body>
 </html>

@@ -28,8 +28,16 @@ async function loginUser() {
   if (!res.ok) {
     showToast(data.message);
   } else {
+    // Store user data for profile page
+    if (data.user && data.user.id) {
+      sessionStorage.setItem('userId', data.user.id);
+      sessionStorage.setItem('username', data.user.username);
+      localStorage.setItem('userId', data.user.id); // Backup storage
+      localStorage.setItem('username', data.user.username);
+    }
+    
     showToast("✅ Login successful!");
-  setTimeout(() => window.location.href = "home.html", 1000);
+    setTimeout(() => window.location.href = "home.html", 1000);
   }
 }
 
