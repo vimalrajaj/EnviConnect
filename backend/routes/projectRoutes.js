@@ -1,3 +1,4 @@
+// GET projects created by a specific use
 const express = require("express");
 const router = express.Router();
 const Project = require("../models/Project");
@@ -17,7 +18,7 @@ const upload = multer({ storage: storage });
 // POST route to add a project
 router.post("/add", upload.array("images"), async (req, res) => {
   try {
-    const { theme, name, duration, location, brief, details, info } = req.body;
+    const { theme, name, duration, location, brief, details, info, owner } = req.body;
 
     // Validate brief description word limit
     const wordCount = brief.trim().split(/\s+/).length;
@@ -35,7 +36,8 @@ router.post("/add", upload.array("images"), async (req, res) => {
       brief,
       details,
       images: imagePaths,
-      info
+      info,
+      owner
     });
 
     await newProject.save();
@@ -65,6 +67,15 @@ router.get("/:id", async (req, res) => {
     res.json(project);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch project" });
+  }
+});
+
+router.get("/created/:ownerId", async (req, res) => {
+  try {
+    const projects = await Project.find({ owner: req.params.ownerId }).sort({ createdAt: -1 });
+    res.json(projects);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch user's projects" });
   }
 });
 

@@ -135,6 +135,11 @@
       e.preventDefault();
       const form = e.target;
       const formData = new FormData(form);
+      // Attach owner (user id) from localStorage
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user && (user.username || user.name)) {
+        formData.append('owner', user.username || user.name);
+      }
       try {
         const res = await fetch('/api/projects/add', {
           method: 'POST',

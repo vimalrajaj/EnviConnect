@@ -9,6 +9,7 @@ const projectSchema = new mongoose.Schema({
   details: { type: String, required: true },
   images: [String],
   info: { type: String },
+  owner: { type: String, required: true },
   createdAt: { type: Date, default: Date.now }
 });
 

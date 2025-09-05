@@ -227,11 +227,23 @@
         </ul>
       </nav>
     </div>
-    <div class="user">
-      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+    <div class="sidebar-menu" id="sidebarMenu" style="display:none;position:absolute;bottom:80px;left:32px;z-index:10;">
+      <div class="sidebar-menu-box" style="background: #eaf6ea; border-radius: 12px; padding: 14px 18px; box-shadow: 0 2px 8px rgba(46,125,50,0.10);">
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button onclick="window.location.href='profile.html'" style="background:none;border:none;display:flex;align-items:center;gap:8px;font-size:1rem;color:#234d20;cursor:pointer;width:100%;text-align:left;padding:0;">
+            <span style="font-size:1.2rem;">👤</span> Profile
+          </button>
+          <button onclick="logoutUser()" style="background:none;border:none;display:flex;align-items:center;gap:8px;font-size:1rem;color:#234d20;cursor:pointer;width:100%;text-align:left;padding:0;">
+            <span style="font-size:1.2rem;">↩️</span> Log out
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="user" id="sidebarUser" style="cursor:pointer;position:relative;">
+      <img id="sidebarUserImg" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
       <div class="user-info">
-        <div class="name">John Doe</div>
-        <div class="email">john.doe@example.com</div>
+        <div class="name" id="sidebarUserName">John Doe</div>
+        <div class="email" id="sidebarUserEmail">john.doe@example.com</div>
       </div>
     </div>
   </div>
@@ -242,15 +254,56 @@
       <span class="icon">🔔</span>
     </div>
     <div class="dashboard-content">
-      <div class="welcome">Welcome back, John!</div>
+  <div class="welcome" id="welcomeMsg">Welcome back!</div>
       <div class="subtitle">Here are the latest projects you can contribute to.</div>
       <div class="projects-grid" id="projectsGrid"></div>
     </div>
   </div>
   <script>
-    const grid = document.getElementById("projectsGrid");
+    function logoutUser() {
+      localStorage.removeItem('user');
+      window.location.href = 'login.html';
+    }
 
-  // Optionally, you can add more JS for the create project button here if needed
+    // Toggle sidebar menu
+    const sidebarUser = document.getElementById('sidebarUser');
+    const sidebarMenu = document.getElementById('sidebarMenu');
+    let menuOpen = false;
+    sidebarUser.addEventListener('click', function(e) {
+      menuOpen = !menuOpen;
+      sidebarMenu.style.display = menuOpen ? 'block' : 'none';
+      e.stopPropagation();
+    });
+    // Hide menu when clicking outside
+    document.addEventListener('click', function(e) {
+      if (menuOpen && !sidebarUser.contains(e.target) && !sidebarMenu.contains(e.target)) {
+        sidebarMenu.style.display = 'none';
+        menuOpen = false;
+      }
+    });
+    // Set sidebar user info from localStorage (set on login)
+    function setSidebarUser() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        document.getElementById('sidebarUserName').textContent = user.name || user.username || 'User';
+        document.getElementById('sidebarUserEmail').textContent = user.email || '';
+        if (user.img) {
+          document.getElementById('sidebarUserImg').src = user.img;
+        }
+      }
+    }
+
+    setSidebarUser();
+    // Set welcome message to current user
+    function setWelcomeMsg() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user && (user.name || user.username)) {
+        document.getElementById('welcomeMsg').textContent = `Welcome back, ${user.name || user.username}!`;
+      }
+    }
+    setWelcomeMsg();
+
+    const grid = document.getElementById("projectsGrid");
 
     async function loadProjects() {
       const res = await fetch("/api/projects");

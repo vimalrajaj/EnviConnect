@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile | EnviConnect</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #eaf6ea;
+      color: #234d20;
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 240px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid #d2e3d2;
+      min-height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+    }
+    .sidebar .logo {
+      font-size: 1.7rem;
+      font-weight: bold;
+      color: #2e7d32;
+      padding: 32px 0 18px 32px;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar nav {
+      flex: 1;
+    }
+    .sidebar nav ul {
+      list-style: none;
+      padding: 0 0 0 0;
+      margin: 0;
+    }
+    .sidebar nav ul li {
+      padding: 16px 32px;
+      font-size: 1.08rem;
+      color: #234d20;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-left: 4px solid transparent;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .sidebar nav ul li.active, .sidebar nav ul li:hover {
+      background: #eaf6ea;
+      border-left: 4px solid #2e7d32;
+      color: #2e7d32;
+    }
+    .sidebar .user {
+      padding: 24px 32px;
+      border-top: 1px solid #d2e3d2;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sidebar .user img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #b7e4c7;
+    }
+    .sidebar .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar .user-info .name {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .sidebar .user-info .email {
+      font-size: 0.92rem;
+      color: #4b604b;
+    }
+    .main {
+      margin-left: 240px;
+      flex: 1;
+      min-height: 100vh;
+      background: #eaf6ea;
+      display: flex;
+      flex-direction: column;
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 24px 36px 0 36px;
+      gap: 18px;
+    }
+    .topbar .icon {
+      font-size: 1.3rem;
+      color: #2e7d32;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    .profile-container {
+      max-width: 1100px;
+      margin: 36px auto 0 auto;
+      background: #eaf6ea;
+      border-radius: 16px;
+      padding: 0 40px 32px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .profile-header {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px 36px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      box-shadow: 0 2px 12px rgba(46,125,50,0.07);
+      margin-bottom: 18px;
+    }
+    .profile-avatar {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #b7e4c7;
+      background: #eaf6ea;
+    }
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .profile-name {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: #234d20;
+    }
+    .profile-email {
+      font-size: 1.15rem;
+      color: #4b604b;
+      margin-bottom: 6px;
+    }
+    .profile-bio {
+      font-size: 1.08rem;
+      color: #234d20;
+      margin-top: 8px;
+    }
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 18px;
+      color: #234d20;
+    }
+    .projects-list {
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .project-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px rgba(46,125,50,0.07);
+      padding: 0 0 18px 0;
+      display: flex;
+      flex-direction: column;
+      width: 320px;
+      cursor: pointer;
+      border: 1px solid #e0e8e0;
+      margin-bottom: 18px;
+    }
+    .project-img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      border-radius: 14px 14px 0 0;
+      background: #eaf6ea;
+    }
+    .project-title {
+      font-size: 1.18rem;
+      font-weight: 600;
+      margin: 14px 0 0 18px;
+      color: #234d20;
+    }
+    .project-tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .project-tab {
+      background: #d2e3d2;
+      color: #234d20;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .project-tab.active {
+      background: #2e7d32;
+      color: #fff;
+    }
+    @media (max-width: 900px) {
+      .sidebar { width: 60px; }
+      .sidebar .logo, .sidebar .user-info, .sidebar nav ul li span { display: none; }
+      .main { margin-left: 60px; }
+      .profile-container { padding: 0 8px 18px 8px; }
+      .profile-header { flex-direction: column; align-items: flex-start; gap: 18px; }
+    }
+    @media (max-width: 600px) {
+      .main { margin-left: 0; }
+      .sidebar { display: none; }
+      .profile-container { padding: 0 2px 8px 2px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div>
+      <div class="logo"> <img src="icons/EnviConnect.png" alt="logo" style="width:28px;vertical-align:middle;"> EnviConnect</div>
+      <nav>
+        <ul>
+          <li onclick="window.location.href='home.html'"><span>🏠</span> Dashboard</li>
+          <li class="active"><span>🍃</span> Projects</li>
+          <li><span>👥</span> Community</li>
+          <li><span>⚙️</span> Settings</li>
+        </ul>
+      </nav>
+    </div>
+    <div class="user">
+      <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+      <div class="user-info">
+        <div class="name" id="sidebarUserName">John Doe</div>
+        <div class="email" id="sidebarUserEmail">john.doe@example.com</div>
+      </div>
+    </div>
+  </div>
+  <div class="main">
+    <div class="topbar">
+      <span class="icon">🔍</span>
+      <span class="icon">🔔</span>
+    </div>
+    <div class="profile-container">
+      <div class="section-title">Profile</div>
+      <div class="profile-header">
+        <img class="profile-avatar" id="profileAvatar" src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+        <div class="profile-info">
+          <div class="profile-name" id="profileName">John Doe</div>
+          <div class="profile-email" id="profileEmail">john.doe@example.com</div>
+          <div class="profile-bio" id="profileBio">Passionate about environmental conservation and community building. Member since 2023.</div>
+        </div>
+      </div>
+      <div class="section-title">Projects Created</div>
+      <div class="projects-list" id="createdProjects">
+        <!-- Created projects will be rendered here -->
+      </div>
+      <div class="section-title">Projects Joined</div>
+      <div class="project-tabs">
+        <button class="project-tab active" onclick="showJoined('ongoing')" id="tabOngoing">Ongoing</button>
+        <button class="project-tab" onclick="showJoined('upcoming')" id="tabUpcoming">Upcoming</button>
+        <button class="project-tab" onclick="showJoined('completed')" id="tabCompleted">Completed</button>
+      </div>
+      <div class="projects-list" id="joinedProjects">
+        <!-- Joined projects will be rendered here -->
+      </div>
+    </div>
+  </div>
+  <script>
+    // Load user info from localStorage
+    function loadUserProfile() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        document.getElementById('profileName').textContent = user.name || user.username || 'User';
+        document.getElementById('profileEmail').textContent = user.email || '';
+        if (user.img) {
+          document.getElementById('profileAvatar').src = user.img;
+        }
+        // Example bio, you can make this dynamic later
+        document.getElementById('profileBio').textContent = user.bio || 'Passionate about environmental conservation and community building. Member since 2023.';
+        document.getElementById('sidebarUserName').textContent = user.name || user.username || 'User';
+        document.getElementById('sidebarUserEmail').textContent = user.email || '';
+      }
+    }
+    loadUserProfile();
+
+    // Demo projects data
+    const demoProjects = [
+      {
+        name: 'Community Garden Initiative',
+        img: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80',
+        status: 'ongoing'
+      },
+      {
+        name: 'River Cleanup Project',
+        img: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80',
+        status: 'completed'
+      }
+    ];
+
+    async function renderCreatedProjects() {
+      const container = document.getElementById('createdProjects');
+      container.innerHTML = '';
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user || !user._id) return;
+      try {
+        const res = await fetch(`/api/projects/created/${user._id}`);
+        const projects = await res.json();
+        if (Array.isArray(projects) && projects.length > 0) {
+          projects.forEach(p => {
+            const imgSrc = (p.images && p.images.length > 0) ? (p.images[0].startsWith('uploads/') ? `/${p.images[0]}` : p.images[0]) : 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80';
+            container.innerHTML += `
+              <div class="project-card">
+                <img class="project-img" src="${imgSrc}" alt="Project Image">
+                <div class="project-title">${p.name}</div>
+              </div>
+            `;
+          });
+        } else {
+          container.innerHTML = '<div style="color:#4b604b;padding:18px;">No projects created yet.</div>';
+        }
+      } catch (err) {
+        container.innerHTML = '<div style="color:#d32f2f;padding:18px;">Error loading projects.</div>';
+      }
+    }
+    renderCreatedProjects();
+
+    // Tabs for joined projects
+    function showJoined(type) {
+      document.getElementById('tabOngoing').classList.remove('active');
+      document.getElementById('tabUpcoming').classList.remove('active');
+      document.getElementById('tabCompleted').classList.remove('active');
+      document.getElementById('tab' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active');
+      renderJoinedProjects(type);
+    }
+
+    function renderJoinedProjects(type) {
+      const container = document.getElementById('joinedProjects');
+      container.innerHTML = '';
+      // For demo, show same projects for all tabs
+      demoProjects.forEach(p => {
+        container.innerHTML += `
+          <div class="project-card">
+            <img class="project-img" src="${p.img}" alt="Project Image">
+            <div class="project-title">${p.name}</div>
+          </div>
+        `;
+      });
+    }
+    showJoined('ongoing');
+  </script>
+</body>
+</html>

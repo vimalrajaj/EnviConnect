@@ -257,6 +257,13 @@
         showToast(data.message);
       } else {
         showToast("✅ Login successful!");
+        // Save user info to localStorage for sidebar
+        if (data.user) {
+          localStorage.setItem('user', JSON.stringify(data.user));
+        } else {
+          // fallback: try to save login and email if available
+          localStorage.setItem('user', JSON.stringify({ username: login, email: data.email || '' }));
+        }
         setTimeout(() => window.location.href = "home.html", 1000);
       }
     }
